@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recheck-in</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="img/TGLE_logo.ico"> <!-- Cambia "images/logo.ico" por la ruta de tu logo -->
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Sección de acciones y filtros -->
+        <section class="actions-and-filters">
+            <div class="actions">
+                <p class="update-time" id="horaActualizacion">Última actualización: Nunca | </p>
+                <button id="btnCargar">Cargar datos</button>
+                <button id="btnActualizar">↻</button>
+            </div>
+
+            <div class="filter">
+                <div class="filter-group">
+                    <h3>Filtrar por Sala</h3>
+                    <div class="filter-buttons">
+                        <button onclick="filtrarSala('AIFA')">AIFA</button>
+                        <button onclick="filtrarSala('HAVEN')">HAVEN</button>
+                        <button onclick="filtrarSala('TGLE')">TGLE</button>
+                        <button onclick="filtrarSala('L 19')">L 19</button>
+                        <button onclick="filtrarSala('TERRAZA')">TERRAZA</button>
+                    </div>
+                </div>
+                
+                <!-- Contenedor para mostrar los totales por sala -->
+                <div id="totalesPorSala" class="filter-group">
+                    <div id="totalesSala"></div>
+                </div>
+                
+                <div class="filter-group">
+                    <h3>Filtrar por Estado</h3>
+                    <div class="filter-buttons">
+                        <button onclick="filtrarPorEstado('excedido')">Tiempo Excedido</button>
+                        <button onclick="filtrarPorEstado('recheck')">Recheck-in</button>
+                        <button class="clear-filter" id="btnLimpiarFiltro">Limpiar Filtro</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de la tabla -->
+        <section class="report">
+            <div class="table-container">
+                <table id="tablaExcel">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Botón para subir -->
+    <button id="btnSubir" class="btn-subir">↑</button>
+    
+    <script src="script.js"></script>
+</body>
+</html>

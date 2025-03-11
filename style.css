@@ -1,0 +1,281 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #e9ecef;
+  text-align: center;
+  margin: 10px;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.actions-and-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.update-time {
+  font-size: 12px;
+  color: #777;
+  margin-right: 10px;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filter-group h3 {
+  font-size: 12px;
+  color: #005f73;
+  margin-bottom: 5px;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+
+.filter-buttons button {
+  flex: 1 1 calc(20% - 5px);
+  max-width: 120px;
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 11px;
+}
+
+.clear-filter {
+  background-color: #005f73;
+  margin-top: 5px;
+  width: 100%;
+}
+
+.clear-filter:hover {
+  background-color: #94d2bd;
+}
+
+button {
+  background-color: #0a9396;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 11px;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #005f73;
+  transform: translateY(-2px);
+}
+
+.table-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  font-size: 11px;
+}
+
+th {
+  background-color: #005f73;
+  color: white;
+  font-weight: bold;
+}
+
+/* Columnas fijas */
+th:nth-last-child(3),
+td:nth-last-child(3) {
+  position: -webkit-sticky;
+  position: sticky;
+  right: 200px;
+  background-color: #005f73;
+  color: white;
+  z-index: 1;
+  width: 100px;
+  min-width: 100px;
+}
+
+th:nth-last-child(2),
+td:nth-last-child(2) {
+  position: -webkit-sticky;
+  position: sticky;
+  right: 100px;
+  background-color: #005f73;
+  color: white;
+  z-index: 2;
+  width: 100px;
+  min-width: 100px;
+}
+
+th:last-child,
+td:last-child {
+  position: -webkit-sticky;
+  position: sticky;
+  right: 0;
+  background-color: #005f73;
+  color: white;
+  z-index: 3;
+  width: 100px;
+  min-width: 100px;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+.btn-subir {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  background-color: #0a9396;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.btn-subir:hover {
+  background-color: #94d2bd;
+  transform: scale(1.1);
+}
+
+/* Estilos para el contenedor de totales por sala */
+#totalesSala {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 8px;
+}
+
+/* Estilos para cada total de sala */
+#totalesSala p {
+    background-color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 11px;
+    color: #333;
+    margin: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(20% - 5px);
+    text-align: center;
+    min-width: 120px;
+    max-width: 120px;
+}
+
+/* Estilos responsivos para móviles */
+@media (max-width: 768px) {
+  .logo {
+      max-width: 80px;
+  }
+
+  .container {
+      padding: 5px;
+  }
+
+  .actions-and-filters {
+      flex-direction: column;
+  }
+
+  .filter-buttons button {
+      flex: 1 1 calc(50% - 5px);
+      max-width: none;
+  }
+
+  .clear-filter {
+      width: 100%;
+  }
+
+  .table-container {
+      max-height: 250px;
+      overflow-y: auto;
+  }
+
+  th, td {
+      padding: 6px;
+      font-size: 10px;
+  }
+
+  /* Ajustar columnas fijas en móviles */
+  th:nth-last-child(3),
+  td:nth-last-child(3) {
+    right: 150px;
+    width: 80px;
+    min-width: 80px;
+  }
+
+  th:nth-last-child(2),
+  td:nth-last-child(2) {
+    right: 80px;
+    width: 80px;
+    min-width: 80px;
+  }
+
+  th:last-child,
+  td:last-child {
+    right: 0;
+    width: 80px;
+    min-width: 80px;
+  }
+}
