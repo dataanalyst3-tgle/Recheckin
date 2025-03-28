@@ -57,25 +57,40 @@ const calcularMinutosRestantes = (estadia, tipoPago) => {
 
 const cargarExcel = async () => {
     const fechaHoy = obtenerFechaHoy();
+    
+    // Uso seguro de la variable de entorno
     const TOKEN = process.env.API_TOKEN;
-    const url = `https://back.tgle.mx/api/check_ins/billing_report?from=${fechaHoy}%2000%3A00%3A00&to=${fechaHoy}%2023%3A59%3A59&token=${token}`;
+    if (!TOKEN) {
+        console.error("API_TOKEN no está configurado");
+        alert("Error: Configuración faltante. Contacta al administrador.");
+        return;
+    }
 
-    const response = await fetch(url);
-    const arrayBuffer = await response.arrayBuffer();
-    const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: "array" });
+    const url = `https://back.tgle.mx/api/check_ins/billing_report?from=${fechaHoy}%2000%3A00%3A00&to=${fechaHoy}%2023%3A59%3A59&token=${TOKEN}`;
 
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-    jsonDataGlobal = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Error ${response.status}`);
+        
+        const arrayBuffer = await response.arrayBuffer();
+        const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: "array" });
 
-    datosFiltradosGlobal = jsonDataGlobal.filter((row, index) => {
-        if (index === 0) return true;
-        const tipoPago = row[6] || "";
-        return tipoPago.startsWith("WALK") || tipoPago.startsWith("VISA") || tipoPago.startsWith("PRIORITY PASS");
-    });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        jsonDataGlobal = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-    actualizarTabla(datosFiltradosGlobal);
-    document.getElementById("horaActualizacion").textContent = `Última actualización: ${obtenerHoraActual()}`;
+        datosFiltradosGlobal = jsonDataGlobal.filter((row, index) => {
+            if (index === 0) return true;
+            const tipoPago = row[6] || "";
+            return tipoPago.startsWith("WALK") || tipoPago.startsWith("VISA") || tipoPago.startsWith("PRIORITY PASS");
+        });
+
+        actualizarTabla(datosFiltradosGlobal);
+        document.getElementById("horaActualizacion").textContent = `Última actualización: ${obtenerHoraActual()}`;
+    } catch (error) {
+        console.error("Error al cargar datos:", error);
+        alert("Error al obtener datos. Intenta nuevamente o revisa tu conexión.");
+    }
 };
 
 const actualizarTabla = (datos) => {
