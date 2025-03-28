@@ -1,3 +1,1 @@
-# Lo esencial para tu caso:
-.env*          # Bloquea TODOS los archivos .env (incluyendo .env.local, etc.)
-node_modules/  # Ya lo tienes - necesario para no subir dependencias
+node_modules/
