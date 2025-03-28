@@ -5,10 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Inicialización de eventos
     const btnCargar = document.getElementById("btnCargar");
     const btnActualizar = document.getElementById("btnActualizar");
+    const btnLimpiarFiltro = document.getElementById("btnLimpiarFiltro");
     const btnSubir = document.getElementById("btnSubir");
 
     if (btnCargar) btnCargar.addEventListener("click", cargarExcel);
     if (btnActualizar) btnActualizar.addEventListener("click", actualizarContenido);
+    if (btnLimpiarFiltro) btnLimpiarFiltro.addEventListener("click", limpiarFiltro);
     if (btnSubir) btnSubir.addEventListener("click", scrollArriba);
 
     window.addEventListener("scroll", () => {
@@ -31,9 +33,8 @@ const cargarExcel = async () => {
     mostrarCargando(true);
     try {
         const fechaHoy = obtenerFechaHoy();
-        const TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NDMxNzQ4NDgsImV4cCI6MTc0MzMxNDg0OCwicm9sZXMiOltdLCJ1c2VybmFtZSI6IjEzOTMifQ.zWz8g4ixM75jeVyVvsjGV3sVZWATI6Zn5d5HrWK72bR2nR5OEPaWQODAbzWrqZA8K2InlgqZrQ5onZhZIUkFwynv26LfVYGBxGwswVKlnZgdXt2TbtPhZiCITPXAXi-zMYpGGThT41Xvf_bcojDjBywAoyhNnttqF3ZPlfa4hpJcXlHsfJDU3VIYcRSwqinE78uy7WVwDthcOPbog1adCl9xhodcRrzJE3sPVOgayYqiut4SFX6pcS58GQEtkqkH4Ht1FFid_EZvkKUjisWWZvinaqlvJ-SALn0NBfiJAT4piHgO9QR5Jn_L8g84Fg5Oxpivf6h8icjsH2dYeTjIX4j6muWsimeb3w0DZBsi8z5LIv7Qxt6_CrOtIZTLowQ7u4Dl857xdgnt4eq9OIOG4qcQXN4rbeYRbLycFUsgT5TOMnac7VRfzSRnMdNivhAhYrQFmJDR3VWv3zYmMZcytcmIy2dHuJBj2mXIlWbVFr-VbtDIIyIp1aTgllSHv20H4XdtauIq1VcupqLRknOQo2RYQT00vi2e6eQI6yjbbu9OPQnUQN-iU5v9IWyelmcG7Z4ZPO1CyN3RMqpAPBlFWIVqQEYJL4WxVTdp6D6XvT4Kr9rbmcnMMi47ng8NBN5R4b0CVee-XXdDAN7jDkepJ8oWa4MeU_tGm_0GNcLz5pI"
-        
-        const url = `https://back.tgle.mx/api/check_ins/billing_report?from=${fechaHoy}%2000:00:00&to=${fechaHoy}%2023:59:59&token=${TOKEN}`;
+        const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NDMxNzQ4NDgsImV4cCI6MTc0MzMxNDg0OCwicm9sZXMiOltdLCJ1c2VybmFtZSI6IjEzOTMifQ.zWz8g4ixM75jeVyVvsjGV3sVZWATI6Zn5d5HrWK72bR2nR5OEPaWQODAbzWrqZA8K2InlgqZrQ5onZhZIUkFwynv26LfVYGBxGwswVKlnZgdXt2TbtPhZiCITPXAXi-zMYpGGThT41Xvf_bcojDjBywAoyhNnttqF3ZPlfa4hpJcXlHsfJDU3VIYcRSwqinE78uy7WVwDthcOPbog1adCl9xhodcRrzJE3sPVOgayYqiut4SFX6pcS58GQEtkqkH4Ht1FFid_EZvkKUjisWWZvinaqlvJ-SALn0NBfiJAT4piHgO9QR5Jn_L8g84Fg5Oxpivf6h8icjsH2dYeTjIX4j6muWsimeb3w0DZBsi8z5LIv7Qxt6_CrOtIZTLowQ7u4Dl857xdgnt4eq9OIOG4qcQXN4rbeYRbLycFUsgT5TOMnac7VRfzSRnMdNivhAhYrQFmJDR3VWv3zYmMZcytcmIy2dHuJBj2mXIlWbVFr-VbtDIIyIp1aTgllSHv20H4XdtauIq1VcupqLRknOQo2RYQT00vi2e6eQI6yjbbu9OPQnUQN-iU5v9IWyelmcG7Z4ZPO1CyN3RMqpAPBlFWIVqQEYJL4WxVTdp6D6XvT4Kr9rbmcnMMi47ng8NBN5R4b0CVee-XXdDAN7jDkepJ8oWa4MeU_tGm_0GNcLz5pI"; // Reemplaza con tu token real
+        const url = `https://back.tgle.mx/api/check_ins/billing_report?from=${fechaHoy}%2000:00:00&to=${fechaHoy}%2023:59:59&token=${token}`;
 
         const response = await fetch(url);
         const arrayBuffer = await response.arrayBuffer();
@@ -43,17 +44,18 @@ const cargarExcel = async () => {
         const worksheet = workbook.Sheets[sheetName];
         jsonDataGlobal = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Filtrar solo los tipos de pago relevantes
+        // Filtrar solo los tipos de pago relevantes para las tablas
         datosFiltradosGlobal = jsonDataGlobal.filter((row, index) => {
-            if (index === 0) return true;
+            if (index === 0) return true; // Mantener headers
             const tipoPago = row[6] || "";
             return tipoPago.startsWith("WALK") || tipoPago.startsWith("VISA") || tipoPago.startsWith("PRIORITY PASS");
         });
 
-        // Actualizar todas las vistas
+        // Manejo de vista según la página
         if (document.getElementById('cardsContainer')) {
             generarCardsResumen();
-            actualizarTablaGeneral(); // Tabla general solo en index.html
+            actualizarTabla(datosFiltradosGlobal); // Mostrar tabla completa en index
+            actualizarTotalGeneral(); // Actualizar total general
         } else {
             const nombreSala = obtenerNombreSalaDesdeURL();
             filtrarSala(nombreSala);
@@ -69,77 +71,6 @@ const cargarExcel = async () => {
     } finally {
         mostrarCargando(false);
     }
-};
-
-// ===== TABLA GENERAL (index.html) =====
-
-const actualizarTablaGeneral = () => {
-    const table = document.getElementById("tablaGeneral");
-    if (!table) return;
-
-    const thead = table.querySelector("thead");
-    const tbody = table.querySelector("tbody");
-    thead.innerHTML = "";
-    tbody.innerHTML = "";
-
-    // Columnas a mostrar
-    const columnasDeseadas = [0, 1, 3, 4, 5, 6, 7, 8, 18];
-    const headerRow = datosFiltradosGlobal[0] || [];
-
-    // Crear headers
-    const trHeader = document.createElement("tr");
-    columnasDeseadas.forEach((index, i) => {
-        const th = document.createElement("th");
-        th.textContent = i === 1 ? "Entrada" : headerRow[index] || "";
-        trHeader.appendChild(th);
-    });
-    trHeader.innerHTML += "<th>Estadía</th><th>Minutos Restantes</th><th>Total</th>";
-    thead.appendChild(trHeader);
-
-    // Llenar tabla con todos los datos
-    datosFiltradosGlobal.slice(1).forEach(row => {
-        if (row && row.includes("-")) {
-            const tr = document.createElement("tr");
-            const fechaHora = convertirAMPMaDate(row[1]);
-
-            // Columnas principales
-            columnasDeseadas.forEach(index => {
-                const td = document.createElement("td");
-                td.textContent = row[index] || "";
-                tr.appendChild(td);
-            });
-
-            // Calcular tiempos
-            const estadia = calcularEstadia(fechaHora);
-            const tipoPago = row[6] || "";
-            const minutosLimite = tipoPago === 'VISA' ? 120 : 180;
-            const minutosRestantes = minutosLimite - (estadia.horas * 60 + estadia.minutos);
-            const total = (parseFloat(row[9]) || 0) + 1;
-
-            // Crear celdas de tiempo
-            const tdEstadia = document.createElement("td");
-            tdEstadia.textContent = `${estadia.horas}h ${estadia.minutos}m`;
-
-            const tdMinutosRestantes = document.createElement("td");
-            const tdTotal = document.createElement("td");
-            tdTotal.textContent = total;
-
-            // Estilizar según tiempo
-            if (minutosRestantes <= 0) {
-                const tiempoExcedido = Math.abs(minutosRestantes);
-                tdMinutosRestantes.textContent = `Excedido: ${Math.floor(tiempoExcedido/60)}h ${tiempoExcedido%60}m`;
-                [tdEstadia, tdMinutosRestantes, tdTotal].forEach(td => td.style.backgroundColor = "#f1666d");
-            } else if (minutosRestantes < 15) {
-                tdMinutosRestantes.textContent = `Checkout en ${minutosRestantes}m`;
-                [tdEstadia, tdMinutosRestantes, tdTotal].forEach(td => td.style.backgroundColor = "#ffcc54");
-            } else {
-                tdMinutosRestantes.textContent = `${minutosRestantes}m`;
-            }
-
-            tr.append(tdEstadia, tdMinutosRestantes, tdTotal);
-            tbody.appendChild(tr);
-        }
-    });
 };
 
 // ===== MANEJO DE SALAS =====
@@ -166,7 +97,8 @@ const mostrarTotalSala = (sala) => {
     const totalElement = document.getElementById('salaTotal');
     if (!totalElement) return;
 
-    const total = datosFiltradosGlobal.slice(1).reduce((sum, row) => {
+    // Usar jsonDataGlobal para contar TODOS los registros
+    const total = jsonDataGlobal.slice(1).reduce((sum, row) => {
         if (row && row.includes("-")) {
             const salaRow = (row[4] || "").toUpperCase();
             const salaBuscada = sala === 'L 19' ? ['L 19', 'L19'] : [sala.toUpperCase()];
@@ -178,16 +110,30 @@ const mostrarTotalSala = (sala) => {
         return sum;
     }, 0);
 
-    const totalFinal = sala.toUpperCase() === "AIFA" ? total + 2 : total;
-    totalElement.querySelector('.total-value').textContent = totalFinal.toFixed(0);
+    totalElement.querySelector('.total-value').textContent = total.toFixed(0);
+};
+
+const actualizarTotalGeneral = () => {
+    const totalElement = document.getElementById('salaTotal');
+    if (!totalElement) return;
+
+    // Usar jsonDataGlobal para contar TODOS los registros
+    const total = jsonDataGlobal.slice(1).reduce((sum, row) => {
+        if (row && row.includes("-")) {
+            return sum + (parseFloat(row[9]) || 0) + 1;
+        }
+        return sum;
+    }, 0);
+
+    totalElement.querySelector('.total-value').textContent = total.toFixed(0);
 };
 
 const filtrarSala = (sala) => {
     const salaBuscada = sala === 'L 19' ? ['L 19', 'L19'] : [sala.toUpperCase()];
 
     const datosFiltrados = datosFiltradosGlobal.filter((row, index) => {
-        if (index === 0) return true;
-        if (!row || !row.includes("-")) return false;
+        if (index === 0) return true; // Mantener headers
+        if (!row || !row.includes("-")) return false; // Filtrar vacíos
 
         const salaRow = (row[4] || "").toUpperCase();
         return salaBuscada.includes(salaRow);
@@ -195,104 +141,6 @@ const filtrarSala = (sala) => {
 
     actualizarTabla(datosFiltrados);
     mostrarTotalSala(sala);
-};
-
-// ===== CARDS DE RESUMEN =====
-
-const generarCardsResumen = () => {
-    const container = document.getElementById('cardsContainer');
-    if (!container) return;
-
-    container.innerHTML = '';
-    const salas = ["AIFA", "HAVEN", "TGLE", "L 19", "TERRAZA"];
-    const totales = {};
-
-    salas.forEach(sala => totales[sala] = 0);
-
-    jsonDataGlobal.slice(1).forEach(row => {
-        if (row && row.includes("-")) {
-            let sala = (row[4] || "").toUpperCase();
-            if (sala === 'L19') sala = 'L 19';
-
-            const total = (parseFloat(row[9]) || 0) + 1;
-            if (salas.includes(sala)) totales[sala] += total;
-        }
-    });
-
-    salas.forEach(sala => {
-        const card = document.createElement('div');
-        card.className = 'summary-card';
-        card.innerHTML = `
-            <h2>${sala}</h2>
-            <div class="total">${totales[sala].toFixed(0)}</div>
-            <a href="${sala.toLowerCase().replace(' ', '')}.html" class="btn-detalles">Ver detalles</a>
-        `;
-        container.appendChild(card);
-    });
-};
-
-// ===== TABLA ESPECÍFICA DE SALA =====
-
-const actualizarTabla = (datos) => {
-    const table = document.getElementById("tablaExcel");
-    if (!table) return;
-
-    const thead = table.querySelector("thead");
-    const tbody = table.querySelector("tbody");
-    thead.innerHTML = "";
-    tbody.innerHTML = "";
-
-    const columnasDeseadas = [0, 1, 3, 4, 5, 6, 7, 8, 18];
-    const headerRow = datos[0] || [];
-
-    const trHeader = document.createElement("tr");
-    columnasDeseadas.forEach((index, i) => {
-        const th = document.createElement("th");
-        th.textContent = i === 1 ? "Entrada" : headerRow[index] || "";
-        trHeader.appendChild(th);
-    });
-    trHeader.innerHTML += "<th>Estadía</th><th>Minutos Restantes</th><th>Total</th>";
-    thead.appendChild(trHeader);
-
-    datos.slice(1).forEach(row => {
-        if (row && row.includes("-")) {
-            const tr = document.createElement("tr");
-            const fechaHora = convertirAMPMaDate(row[1]);
-
-            columnasDeseadas.forEach(index => {
-                const td = document.createElement("td");
-                td.textContent = row[index] || "";
-                tr.appendChild(td);
-            });
-
-            const estadia = calcularEstadia(fechaHora);
-            const tipoPago = row[6] || "";
-            const minutosLimite = tipoPago === 'VISA' ? 120 : 180;
-            const minutosRestantes = minutosLimite - (estadia.horas * 60 + estadia.minutos);
-            const total = (parseFloat(row[9]) || 0) + 1;
-
-            const tdEstadia = document.createElement("td");
-            tdEstadia.textContent = `${estadia.horas}h ${estadia.minutos}m`;
-
-            const tdMinutosRestantes = document.createElement("td");
-            const tdTotal = document.createElement("td");
-            tdTotal.textContent = total;
-
-            if (minutosRestantes <= 0) {
-                const tiempoExcedido = Math.abs(minutosRestantes);
-                tdMinutosRestantes.textContent = `Excedido: ${Math.floor(tiempoExcedido/60)}h ${tiempoExcedido%60}m`;
-                [tdEstadia, tdMinutosRestantes, tdTotal].forEach(td => td.style.backgroundColor = "#f1666d");
-            } else if (minutosRestantes < 15) {
-                tdMinutosRestantes.textContent = `Checkout en ${minutosRestantes}m`;
-                [tdEstadia, tdMinutosRestantes, tdTotal].forEach(td => td.style.backgroundColor = "#ffcc54");
-            } else {
-                tdMinutosRestantes.textContent = `${minutosRestantes}m`;
-            }
-
-            tr.append(tdEstadia, tdMinutosRestantes, tdTotal);
-            tbody.appendChild(tr);
-        }
-    });
 };
 
 // ===== FUNCIONES AUXILIARES =====
@@ -355,9 +203,124 @@ const calcularEstadia = (fechaHora) => {
     };
 };
 
+// ===== VISUALIZACIÓN =====
+
+const generarCardsResumen = () => {
+    const container = document.getElementById('cardsContainer');
+    if (!container) return;
+
+    container.innerHTML = '';
+    const salas = ["AIFA", "HAVEN", "TGLE", "L 19", "TERRAZA"];
+    const totales = {};
+
+    salas.forEach(sala => totales[sala] = 0);
+
+    // Usar jsonDataGlobal para contar TODOS los registros
+    jsonDataGlobal.slice(1).forEach(row => {
+        if (row && row.includes("-")) {
+            let sala = (row[4] || "").toUpperCase();
+            if (sala === 'L19') sala = 'L 19';
+
+            const total = (parseFloat(row[9]) || 0) + 1;
+            if (salas.includes(sala)) totales[sala] += total;
+        }
+    });
+
+    // Crear cards
+    salas.forEach(sala => {
+        const card = document.createElement('div');
+        card.className = 'summary-card';
+        card.innerHTML = `
+            <h2>${sala}</h2>
+            <div class="total">${totales[sala].toFixed(0)}</div>
+            <a href="${sala.toLowerCase().replace(' ', '')}.html" class="btn-detalles">Ver detalles</a>
+        `;
+        container.appendChild(card);
+    });
+};
+
+const actualizarTabla = (datos) => {
+    const table = document.getElementById("tablaExcel") || document.getElementById("tablaGeneral");
+    if (!table) return;
+
+    const thead = table.querySelector("thead");
+    const tbody = table.querySelector("tbody");
+    thead.innerHTML = "";
+    tbody.innerHTML = "";
+
+    const columnasDeseadas = [0, 1, 3, 4, 5, 6, 7, 8, 18];
+    const headerRow = datos[0] || [];
+
+    // Crear headers
+    const trHeader = document.createElement("tr");
+    columnasDeseadas.forEach((index, i) => {
+        const th = document.createElement("th");
+        th.textContent = i === 1 ? "Entrada" : headerRow[index] || "";
+        trHeader.appendChild(th);
+    });
+    trHeader.innerHTML += "<th>Estadía</th><th>Minutos Restantes</th><th>Total</th>";
+    thead.appendChild(trHeader);
+
+    // Llenar tabla
+    (datos.slice(1) || []).forEach(row => {
+        if (row && row.includes("-")) {
+            const tr = document.createElement("tr");
+            const fechaHora = convertirAMPMaDate(row[1]);
+
+            // Columnas principales
+            columnasDeseadas.forEach(index => {
+                const td = document.createElement("td");
+                td.textContent = row[index] || "";
+                tr.appendChild(td);
+            });
+
+            // Calcular tiempos
+            const estadia = calcularEstadia(fechaHora);
+            const tipoPago = row[6] || "";
+            const minutosLimite = tipoPago === 'VISA' ? 120 : 180;
+            const minutosRestantes = minutosLimite - (estadia.horas * 60 + estadia.minutos);
+            const total = (parseFloat(row[9]) || 0) + 1;
+
+            // Crear celdas de tiempo
+            const tdEstadia = document.createElement("td");
+            tdEstadia.textContent = `${estadia.horas}h ${estadia.minutos}m`;
+
+            const tdMinutosRestantes = document.createElement("td");
+            const tdTotal = document.createElement("td");
+            tdTotal.textContent = total;
+
+            // Estilizar según tiempo
+            if (minutosRestantes <= 0) {
+                const tiempoExcedido = Math.abs(minutosRestantes);
+                tdMinutosRestantes.textContent = `Excedido: ${Math.floor(tiempoExcedido/60)}h ${tiempoExcedido%60}m`;
+                [tdEstadia, tdMinutosRestantes, tdTotal].forEach(td => td.style.backgroundColor = "#f1666d");
+            } else if (minutosRestantes < 15) {
+                tdMinutosRestantes.textContent = `Checkout en ${minutosRestantes}m`;
+                [tdEstadia, tdMinutosRestantes, tdTotal].forEach(td => td.style.backgroundColor = "#ffcc54");
+            } else {
+                tdMinutosRestantes.textContent = `${minutosRestantes}m`;
+            }
+
+            tr.append(tdEstadia, tdMinutosRestantes, tdTotal);
+            tbody.appendChild(tr);
+        }
+    });
+};
+
+// ===== FILTROS Y UTILIDADES =====
+
+const filtrarPorEstado = (estado) => {
+    const filas = document.querySelectorAll("#tablaGeneral tbody tr, #tablaExcel tbody tr");
+    filas.forEach(fila => {
+        const color = fila.children[fila.children.length - 3].style.backgroundColor;
+        fila.style.display = (estado === "excedido" && color === "rgb(241, 102, 109)") ||
+                           (estado === "recheck" && color === "rgb(255, 204, 84)") ? "" : "none";
+    });
+};
+
 const limpiarFiltro = () => {
     if (document.getElementById('cardsContainer')) {
-        actualizarTablaGeneral();
+        actualizarTabla(datosFiltradosGlobal);
     } else {
         const nombreSala = obtenerNombreSalaDesdeURL();
         filtrarSala(nombreSala);
