@@ -60,7 +60,7 @@ const cargarExcel = async () => {
     
     // Uso seguro de la variable de entorno
     const Tokenkey = process.env.API_TOKEN;
-    if (!tokenkey) {
+    if (!Tokenkey) {
         console.error("API_TOKEN no está configurado");
         alert("Error: Configuración faltante. Contacta al administrador.");
         return;
