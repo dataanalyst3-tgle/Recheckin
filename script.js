@@ -57,7 +57,7 @@ const calcularMinutosRestantes = (estadia, tipoPago) => {
 
 const cargarExcel = async () => {
     const fechaHoy = obtenerFechaHoy();
-    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NDMxNzQ4NDgsImV4cCI6MTc0MzMxNDg0OCwicm9sZXMiOltdLCJ1c2VybmFtZSI6IjEzOTMifQ.zWz8g4ixM75jeVyVvsjGV3sVZWATI6Zn5d5HrWK72bR2nR5OEPaWQODAbzWrqZA8K2InlgqZrQ5onZhZIUkFwynv26LfVYGBxGwswVKlnZgdXt2TbtPhZiCITPXAXi-zMYpGGThT41Xvf_bcojDjBywAoyhNnttqF3ZPlfa4hpJcXlHsfJDU3VIYcRSwqinE78uy7WVwDthcOPbog1adCl9xhodcRrzJE3sPVOgayYqiut4SFX6pcS58GQEtkqkH4Ht1FFid_EZvkKUjisWWZvinaqlvJ-SALn0NBfiJAT4piHgO9QR5Jn_L8g84Fg5Oxpivf6h8icjsH2dYeTjIX4j6muWsimeb3w0DZBsi8z5LIv7Qxt6_CrOtIZTLowQ7u4Dl857xdgnt4eq9OIOG4qcQXN4rbeYRbLycFUsgT5TOMnac7VRfzSRnMdNivhAhYrQFmJDR3VWv3zYmMZcytcmIy2dHuJBj2mXIlWbVFr-VbtDIIyIp1aTgllSHv20H4XdtauIq1VcupqLRknOQo2RYQT00vi2e6eQI6yjbbu9OPQnUQN-iU5v9IWyelmcG7Z4ZPO1CyN3RMqpAPBlFWIVqQEYJL4WxVTdp6D6XvT4Kr9rbmcnMMi47ng8NBN5R4b0CVee-XXdDAN7jDkepJ8oWa4MeU_tGm_0GNcLz5pI";
+    const TOKEN = process.env.API_TOKEN;
     const url = `https://back.tgle.mx/api/check_ins/billing_report?from=${fechaHoy}%2000%3A00%3A00&to=${fechaHoy}%2023%3A59%3A59&token=${token}`;
 
     const response = await fetch(url);
