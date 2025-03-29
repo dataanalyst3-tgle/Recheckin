@@ -173,13 +173,10 @@ const mostrarCargando = (mostrar) => {
 
 const obtenerFechaHoy = () => {
     const hoy = new Date();
-    // Usamos toLocaleDateString con formato ISO (Canada usa YYYY-MM-DD)
-    return hoy.toLocaleDateString('en-CA');
+    return `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`;
 };
 
-const obtenerHoraActual = () => {
-    return new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-};
+const obtenerHoraActual = () => new Date().toLocaleTimeString();
 
 const convertirAMPMaDate = (horaTexto) => {
     if (!horaTexto) return null;
