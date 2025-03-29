@@ -173,7 +173,8 @@ const mostrarCargando = (mostrar) => {
 
 const obtenerFechaHoy = () => {
     const hoy = new Date();
-    return hoy.toISOString().split('T')[0];
+    // Usamos toLocaleDateString con formato ISO (Canada usa YYYY-MM-DD)
+    return hoy.toLocaleDateString('en-CA');
 };
 
 const obtenerHoraActual = () => {
