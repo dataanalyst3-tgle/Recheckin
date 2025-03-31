@@ -306,24 +306,87 @@ const actualizarTabla = (datos) => {
 };
 
 // ===== FILTROS Y UTILIDADES =====
+let filtrosActivos = {
+    excedido: false,
+    recheck: false
+};
 
-const filtrarPorEstado = (estado) => {
+const aplicarFiltros = () => {
     const filas = document.querySelectorAll("#tablaGeneral tbody tr, #tablaExcel tbody tr");
+
+    if (!filtrosActivos.excedido && !filtrosActivos.recheck) {
+        filas.forEach(fila => fila.style.display = "");
+        return;
+    }
+
     filas.forEach(fila => {
         const color = fila.children[fila.children.length - 3].style.backgroundColor;
-        fila.style.display = (estado === "excedido" && color === "rgb(241, 102, 109)") ||
-                           (estado === "recheck" && color === "rgb(255, 204, 84)") ? "" : "none";
+        const esExcedido = color === "rgb(241, 102, 109)";
+        const esRecheck = color === "rgb(255, 204, 84)";
+
+        const mostrarFila = (
+            (filtrosActivos.excedido && esExcedido) || 
+            (filtrosActivos.recheck && esRecheck)
+        );
+
+        fila.style.display = mostrarFila ? "" : "none";
     });
 };
 
+const actualizarEstilosBotones = () => {
+    const btnExcedido = document.querySelector("button[onclick*='excedido']");
+    const btnRecheck = document.querySelector("button[onclick*='recheck']");
+
+    const actualizarBoton = (boton, estaActivo) => {
+        if (!boton) return;
+
+        if (estaActivo) {
+            boton.style.backgroundColor = '#005f73';
+            boton.style.fontWeight = 'bold';
+            boton.style.boxShadow = '0 0 0 2px white';
+            boton.classList.add('active');
+        } else {
+            boton.style.backgroundColor = '#0a9396';
+            boton.style.fontWeight = 'normal';
+            boton.style.boxShadow = 'none';
+            boton.classList.remove('active');
+        }
+    };
+
+    actualizarBoton(btnExcedido, filtrosActivos.excedido);
+    actualizarBoton(btnRecheck, filtrosActivos.recheck);
+};
+
+const filtrarPorEstado = (estado) => {
+    filtrosActivos[estado] = !filtrosActivos[estado];
+    actualizarEstilosBotones();
+    aplicarFiltros();
+};
+
 const limpiarFiltro = () => {
+    // Resetear todos los filtros
+    filtrosActivos = {
+        excedido: false,
+        recheck: false
+    };
+
+    // Actualizar UI
+    actualizarEstilosBotones();
+    aplicarFiltros();
+
+    // Recargar datos según la vista actual
     if (document.getElementById('cardsContainer')) {
         actualizarTabla(datosFiltradosGlobal);
     } else {
-        const nombreSala = obtenerNombreSalaDesdeURL();
-        filtrarSala(nombreSala);
+        filtrarSala(obtenerNombreSalaDesdeURL());
     }
 };
 
-const actualizarContenido = () => cargarExcel();
-const scrollArriba = () => window.scrollTo({ top: 0, behavior: "smooth" });
+const actualizarContenido = () => {
+    cargarExcel();
+    limpiarFiltro(); // Limpiar filtros al actualizar
+};
+
+const scrollArriba = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+};
