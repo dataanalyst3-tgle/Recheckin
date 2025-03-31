@@ -345,6 +345,25 @@ tr:hover {
   margin: 0 auto;
 }
 
+/* Estilos para botones de filtro activos */
+.filter-buttons button.active {
+    background-color: #005f73 !important;
+    font-weight: bold;
+    box-shadow: 0 0 0 2px white;
+    transform: translateY(-1px);
+}
+
+/* Asegurar que los botones mantengan el hover incluso cuando están activos */
+.filter-buttons button.active:hover {
+    background-color: #003d4d !important;
+}
+
+/* Transición suave para los cambios de estado */
+.filter-buttons button {
+    transition: all 0.2s ease;
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {
