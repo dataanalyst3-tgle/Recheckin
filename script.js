@@ -19,10 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Carga inicial
-    if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
         cargarExcel();
-    }
 
     setInterval(cargarExcel, 5 * 60 * 1000); // Actualizar cada 5 minutos
 });
