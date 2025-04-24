@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     cargarExcel();
-    setInterval(cargarExcel, 1 * 60 * 1000); // Actualizar cada 5 minutos
+    setInterval(cargarExcel, 3 * 60 * 1000); // Actualizar cada 5 minutos
 });
 
 // ===== FUNCIONES PRINCIPALES =====
