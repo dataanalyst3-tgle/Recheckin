@@ -17,34 +17,19 @@ const calcularTotal = (row) => {
     return col9 + col10 + 1;
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Inicialización de eventos
-    const btnCargar = document.getElementById("btnCargar");
-    const btnActualizar = document.getElementById("btnActualizar");
-    const btnLimpiarFiltro = document.getElementById("btnLimpiarFiltro");
-    const btnSubir = document.getElementById("btnSubir");
-
-    if (btnCargar) btnCargar.addEventListener("click", cargarExcel);
-    if (btnActualizar) btnActualizar.addEventListener("click", actualizarContenido);
-    if (btnLimpiarFiltro) btnLimpiarFiltro.addEventListener("click", limpiarFiltro);
-    if (btnSubir) btnSubir.addEventListener("click", scrollArriba);
-
-    window.addEventListener("scroll", () => {
-        if (btnSubir) {
-            btnSubir.style.display = document.documentElement.scrollTop > 300 ? "flex" : "none";
-        }
-    });
-
-    cargarExcel();
-    setInterval(cargarExcel, 3 * 60 * 1000); // Actualizar cada 5 minutos
-});
-
-// ===== FUNCIONES PRINCIPALES =====
-
 const cargarExcel = async () => {
     mostrarCargando(true);
     try {
         const fechaHoy = obtenerFechaHoy();
+        
+        
+        
+        
+        
+        
+        
+        
+        
         const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NDU1MjIxNjUsImV4cCI6MTc0NTY2MjE2NSwicm9sZXMiOltdLCJ1c2VybmFtZSI6IjEzOTMifQ.T4y8LLxPbFnxt2Ia94oa4khV2AqB4FcFwJU_VHl61Ru6G3XJhSZD7jG2-6tS-FZtJdCldmRfr0MyfVAGGeqFr-BBmwt8nz37w6tsgMCJ7ukKCtxY6ux38bZLNvQ8st3YguRjoj5by1oQoWyU9RMeHT5QN-1mXCU3l_3Uy4K0qvn2si0n5eowsiVF588WHmeT2GP9V3Whi60GA2l3fQoZQjAMZ4T1kFBSkWZ14t4_xqmVkeMVqNCaYwjOWewkpTR9IAjW_PKwMS5xff0j7ijsUPPEWCtCEYIF0j-ItGNolBPEvKolTBXsxPL9qbTMsMgvJ5CMX422F0hTWPP6mkIWPT1S0SKFxdHlqqp-nEniiyd58srjXF01qQlAoIW45lGVHImnWqaQHooJxzPwOBtRyuX-AYdMAXhiVFwBtIM0VuTrojcGBaozNgEvU3cI7tBdviUG4sPYPkzOTRsej_HcELAGlpT5dkUqsTHcdjZ58_bKZsaqlFCdQEoguManTGhbdFihVMea0ZrKw_eyKeWBcyHAgcrTMPD0ft59gdutLvC3aUc1prKrVNXBfcWoDkwoVJDa6nXYwfTYo8Wl2Xie-PQE3dx-JSLwZrZikLIxEiBH_r1q4KYly-Tkp1yDMO_rbHOtVK8ofToRwQi8pzNV33ANHMKzW9gIx19Bt-PYTc4";
         const url = `https://back.tgle.mx/api/check_ins/billing_report?from=${fechaHoy}%2000:00:00&to=${fechaHoy}%2023:59:59&token=${token}`;
 
@@ -103,6 +88,30 @@ const cargarExcel = async () => {
         mostrarCargando(false);
     }
 };
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Inicialización de eventos
+    const btnCargar = document.getElementById("btnCargar");
+    const btnActualizar = document.getElementById("btnActualizar");
+    const btnLimpiarFiltro = document.getElementById("btnLimpiarFiltro");
+    const btnSubir = document.getElementById("btnSubir");
+
+    if (btnCargar) btnCargar.addEventListener("click", cargarExcel);
+    if (btnActualizar) btnActualizar.addEventListener("click", actualizarContenido);
+    if (btnLimpiarFiltro) btnLimpiarFiltro.addEventListener("click", limpiarFiltro);
+    if (btnSubir) btnSubir.addEventListener("click", scrollArriba);
+
+    window.addEventListener("scroll", () => {
+        if (btnSubir) {
+            btnSubir.style.display = document.documentElement.scrollTop > 300 ? "flex" : "none";
+        }
+    });
+
+    cargarExcel();
+    setInterval(cargarExcel, 3 * 60 * 1000); // Actualizar cada 5 minutos
+});
 
 // Función para mostrar mensajes flotantes
 const mostrarMensajeFlotante = (mensaje) => {
