@@ -1,4 +1,4 @@
-let jsonDataGlobal = [];
+        const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NTA0MzE2MjgsImV4cCI6MTc1MDU3MTYyOCwicm9sZXMiOltdLCJ1c2VybmFtZSI6IjEzOTMifQ.wvWMpasCPXPpHA2IH7AKCisWeFcpGwJvwUAwH8HX05DpWVlTlvmlQktb9TSNd8I_MiOV2iFfQrwKIogSRq_wEwpwuESRIqyn7tNcrnVn2b1F-tcQrNznoVQpGri18Tz7OyAf8ylDfpRSgLg_3n13W3zdRjol2BtRZivNtS6YnValmxS5-Zrg3mkuS7Q53PqG4_X48IuJlzki3Cdyt91rmW0RwzXi11_gp4VQQ-HRC-S2lycdtz70dp8lrUO-ByU2zgr_E2Lwxn_QzD51GlUFyHpaY_D3BAP9Hx5nbfGGRNzSqOqHtOcwWEPAUGuZEbatR9-kk-eaxNdqvNWHUUKILn4UQi1Fbogu1uTQfGBH_jhJ1B1V1vhgCE02b5px6RXl6pFy3MR4sDbOa8RSRu4yXeu9aiw1LAKnPfIoJPwOloJuA__nrjsFBqNDzT1iizom0J0-K_f1h1qUPNmHSLopu_WCizvXFSIwrTg3fLdtOThWBmowFMWorAJs9d0GEMWjrf0ybp0bo66DackTEVP5igxTc35ZWFQ7DIyez4A4Lh9khkxJFOpmoOFcgm1NlOF5EVBhDJnSCoQzWJ61P-t252BII_L3dx_hqTPbtSPSpYdyqAhs7OYl2IwqBxxCc5O_Xfb_WHYSIrK_fP7U3jFxMn-pUXs3yMG2Q6rGEEEozAM";let jsonDataGlobal = [];
 let datosFiltradosGlobal = [];
 
 // Función mejorada para calcular el total
@@ -21,7 +21,7 @@ const cargarExcel = async () => {
     mostrarCargando(true);
     try {
         const fechaHoy = obtenerFechaHoy();
-        const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NTAzODEyMzgsImV4cCI6MTc1MDUyMTIzOCwicm9sZXMiOltdLCJ1c2VybmFtZSI6IjEzOTMifQ.xuLdPR12iRxRp31IHYFaxA5yoXh97x5ls7xaTpq17Mc7ct1FzTb3mdRkY_C85qCRTgO5DY-l2jCvW-XdhI9CWxOeJB-sOKd0w6ehBc0_6kKbXkVXdLFMo6tjy9mjFiPMyxQeb9_Xow3pIv9ALwGt0lDJYQNDTVzurt_SD7bLhy4J8I6lGnCUHOuj_IByCx-wpl_u2iBti_1-bGaQ4k1s0u95QhExIOiM7lAFN_xaR7GuO_WzV0NrmVCdbXIEFJYItFdzVLGEiFBLahYOCnpnsGWX-z1BShVh4Gu5bhfaf3Vdu1VEuaQo1hwJT9fSkCTGzmKlyEj6McI4ibbXiZAxT1ucO7RkL4x8jjyWKul_z81KxLWuhk-jjLSiplNZ_8dd9Jaecg8de7Fbxm2yJM63ekCP3Czf_YXBKcae-2ZwKe9taafR6RtFgo6JAOcD-pgkwjP-bSQ-TvVymUj_zqYs4q04o9xnyFtquW1xvX-l4Vn3VDSX10UKEDLRYIFqNSCmxM4KOkpAS5dB9eLXc_KAt16YjdndYQqsJfy7JTz4OPyG70HyY2r93dFPM4Xql9sCaRU994RMTCTr3NL9LIXGWIvlUaHW9UXNsFtzL8zdrC7VfJrVQQAdseEPD_edMJ4NltcGRrxbBb6ItYAHs-s6fwW0hevx2Rni4wO9VX1HfTQ";
+
         const url = `https://back.tgle.mx/api/check_ins/billing_report?from=${fechaHoy}%2000:00:00&to=${fechaHoy}%2023:59:59&token=${token}`;
 
         const response = await fetch(url);
